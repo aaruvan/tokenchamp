@@ -5,15 +5,15 @@ A full-stack web application for managing tournaments and issuing Champion NFTs 
 ## Features
 
 🏆 **Tournament Management**
-- Create tournaments with customizable sports, formats, and badges
+- Create tournaments with customizable tournament types, formats, and badges
 - Team registration with wallet addresses
 - Match result tracking
 - Automatic winner determination
 
 🎨 **NFT Minting on Solana**
-- Automatic Champion NFT minting for tournament winners
+- Automatic Champion NFT minting for winners
 - Metaplex-compatible metadata
-- Badge images with sport, semester, and team information
+- Badge images with tournament, month, team information
 - Hall of Champions showcase
 
 🔗 **Web3 Integration**
@@ -94,14 +94,10 @@ SOLANA_PRIVATE_KEY=your_private_key_base58  # Optional for MVP
 pip install -r requirements.txt
 ```
 
-### 5. Run database migrations
+### 5. Initialize the database
 
 ```bash
-cd backend
-flask db init  # First time only
-flask db migrate -m "Initial migration"
-flask db upgrade
-cd ..
+python setup_db.py
 ```
 
 ### 6. Install frontend dependencies
@@ -116,7 +112,7 @@ In separate terminals:
 
 **Terminal 1 - Backend:**
 ```bash
-python backend/app.py
+python run.py
 ```
 
 **Terminal 2 - Frontend:**
@@ -126,14 +122,14 @@ npm run dev
 
 The application will be available at:
 - Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
+- Backend API: http://localhost:5001
 
 ## Usage
 
 ### Admin Flow
 
 1. Navigate to Admin panel
-2. Create a tournament: Fill in details (name, sport, format, semester, year, badge image URL)
+2. Create a tournament: Fill in details (name, tournament, format, month, year, badge image URL)
 3. View registered teams
 4. Submit match results
 5. Declare a winner (triggers automatic NFT minting)
@@ -182,26 +178,20 @@ Public page showcasing all past tournament winners with their badges.
 
 ### NFT Minting
 
-The system uses a mock implementation for MVP that simulates NFT minting. In production, you'll need to:
+Minting is implemented via a hybrid integration:
 
-1. Implement actual Metaplex integration using `metaplex-py` or Solana Python SDK
-2. Upload images to IPFS (Pinata, NFT.Storage, etc.) or Arweave
-3. Create token mint with metadata account
-4. Transfer ownership to recipient
-5. Handle transaction confirmations
-
-Example production integration would use:
-
-```python
-from metaplex import create_nft, upload_metadata_to_arweave
-```
+- Flask backend triggers a Node.js script using the Metaplex JS SDK
+- Image is rehosted to Arweave via Bundlr (permanent URL)
+- Metadata JSON is uploaded to Arweave
+- NFT is minted on Solana devnet to the winner's wallet
+- Token mint address and metadata URI are stored in Postgres
 
 ### Database Schema
 
 **Tournaments**
-- id, name, sport, format_type, semester, year
+- id, name, tournament_name, format_type, month, year
 - badge_image_url, badge_metadata_url
-- status, created_at
+- status, created_at, password_hash (optional)
 
 **Teams**
 - id, tournament_id, team_name
@@ -260,10 +250,6 @@ tokenchamp/
 ├── docker-compose.yml
 └── README.md
 ```
-
-## License
-
-MIT
 
 ## Acknowledgments
 
