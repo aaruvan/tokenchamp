@@ -1,0 +1,14 @@
+{
+  "name": "tokenchamp-metaplex",
+  "version": "1.0.0",
+  "description": "Metaplex NFT minting for TokenChamp",
+  "main": "mint_nft.js",
+  "scripts": {
+    "test": "node mint_nft.js"
+  },
+  "dependencies": {
+    "@metaplex-foundation/js": "^0.20.0",
+    "@solana/web3.js": "^1.87.6"
+  }
+}
+

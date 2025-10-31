@@ -1,0 +1,9 @@
+Flask-Migrate migrations
+
+Run the following commands to manage migrations:
+
+flask db init       # Initialize (first time only)
+flask db migrate    # Create new migration
+flask db upgrade    # Apply migrations
+flask db downgrade  # Rollback migration
+

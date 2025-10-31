@@ -1,0 +1,67 @@
+/* Design tokens - Cyberpunk/Web3 */
+:root {
+  --bg: #05010a;            /* deep space */
+  --bg-elev: #0a0114;       /* dark panel */
+  --panel: #0f0a1f;         /* card base */
+  --muted: #96a0b3;         /* cool gray */
+  --text: #e6f1ff;          /* high contrast */
+  --primary: #00e5ff;       /* neon cyan */
+  --primary-600: #00a3bb;   /* deep cyan */
+  --accent: #ff1cf7;        /* neon magenta */
+  --accent-2: #7c3aed;      /* electric purple */
+  --success: #22ff88;       /* synth green */
+  --error: #ff4d6d;         /* hot red */
+  --radius: 16px;
+  --outline: 1px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text);
+  /* Swirly dark gradient */
+  background:
+    radial-gradient(1200px 900px at 15% -10%, rgba(10, 1, 20, 0.85) 0%, transparent 55%),
+    radial-gradient(900px 700px at 85% -5%, rgba(5, 1, 10, 0.75) 0%, transparent 50%),
+    conic-gradient(from 200deg at 50% 20%, rgba(0, 0, 0, 0.0), #09020f 15%, #06030b 35%, #05010a 55%, #07020f 75%, #09030f 90%, #05010a),
+    linear-gradient(180deg, #06020c 0%, #05010a 100%);
+}
+
+/* Synth grid + noise overlays */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  inset: 0;
+  z-index: -1;
+}
+
+/* remove grid overlay */
+body::before { background: none; }
+
+/* noise */
+@keyframes grain { 0% { transform: translate(0,0) } 100% { transform: translate(-10%, -10%) } }
+body::after {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.035"/></svg>');
+  background-size: 300px 300px;
+  animation: grain 6s steps(2) infinite;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+}
+
